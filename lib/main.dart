@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import './screens/about.dart';
+import './screens/config.dart';
+import './screens/help.dart';
 import './screens/my_home_page.dart';
 import './utils/constants.dart';
 
@@ -21,6 +23,8 @@ class MyApp extends StatelessWidget {
         routes: {
           Const.ROOT_ROUTE: (ctx) => MyHomePage(title: Const.TITLE),
           About.routeName: (ctx) => About(),
+          Config.routeName: (ctx) => Config(),
+          Help.routeName: (ctx) => Help(),
         });
   }
 }

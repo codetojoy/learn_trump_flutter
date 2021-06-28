@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import './about.dart';
+import './config.dart';
+import './help.dart';
 import '../models/cards.dart';
 import '../models/hand.dart';
 import '../widgets/hand.dart';
@@ -33,13 +35,21 @@ class _MyHomePageState extends State<MyHomePage> {
   void _pushAbout() {
     Navigator.of(context).pushNamed(About.routeName);
   }
+  void _pushConfig() {
+    Navigator.of(context).pushNamed(Config.routeName);
+  }
+  void _pushHelp() {
+    Navigator.of(context).pushNamed(Help.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
     _appBar = AppBar(
       title: Text(widget.title),
       actions: [
+        IconButton(icon: Icon(Icons.help_outline), onPressed: _pushHelp),
         IconButton(icon: Icon(Icons.info), onPressed: _pushAbout),
+        IconButton(icon: Icon(Icons.settings), onPressed: _pushConfig),
       ],
     );
 
