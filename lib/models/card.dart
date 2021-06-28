@@ -70,7 +70,6 @@ class Card {
     return _suit == leadingSuit;
   }
 
-/*
   String get imageURL {
     var ordStr = _buildOrdinalString();
     var suitStr = _buildSuitString();
@@ -78,7 +77,6 @@ class Card {
     var result = 'assets/images/cards/${ordStr}${suitStr}.jpg';
     return result;
   }
-*/
 
   String _buildOrdinalString() {
     var result = '';

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -24,7 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -40,16 +39,76 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/cards/6D.jpg
+    - assets/images/cards/6S.jpg
+    - assets/images/cards/5H.jpg
+    - assets/images/cards/Yellow_back.jpg
+    - assets/images/cards/9H.jpg
+    - assets/images/cards/7C.jpg
+    - assets/images/cards/AS.jpg
+    - assets/images/cards/AD.jpg
+    - assets/images/cards/6C.jpg
+    - assets/images/cards/8H.jpg
+    - assets/images/cards/back_cards-07.jpg
+    - assets/images/cards/blue_back.jpg
+    - assets/images/cards/7D.jpg
+    - assets/images/cards/4H.jpg
+    - assets/images/cards/7S.jpg
+    - assets/images/cards/AC.jpg
+    - assets/images/cards/QH.jpg
+    - assets/images/cards/JC.jpg
+    - assets/images/cards/10D.jpg
+    - assets/images/cards/10S.jpg
+    - assets/images/cards/honor_diamond.jpg
+    - assets/images/cards/KS.jpg
+    - assets/images/cards/KD.jpg
+    - assets/images/cards/3H.jpg
+    - assets/images/cards/2H.jpg
+    - assets/images/cards/JS.jpg
+    - assets/images/cards/JD.jpg
+    - assets/images/cards/KC.jpg
+    - assets/images/cards/10C.jpg
+    - assets/images/cards/3C.jpg
+    - assets/images/cards/honor_spade.jpg
+    - assets/images/cards/2S.jpg
+    - assets/images/cards/2D.jpg
+    - assets/images/cards/JH.jpg
+    - assets/images/cards/QC.jpg
+    - assets/images/cards/10H.jpg
+    - assets/images/cards/purple_back.jpg
+    - assets/images/cards/KH.jpg
+    - assets/images/cards/3S.jpg
+    - assets/images/cards/3D.jpg
+    - assets/images/cards/QS.jpg
+    - assets/images/cards/QD.jpg
+    - assets/images/cards/2C.jpg
+    - assets/images/cards/7H.jpg
+    - assets/images/cards/4S.jpg
+    - assets/images/cards/4D.jpg
+    - assets/images/cards/9C.jpg
+    - assets/images/cards/honor_heart-14.jpg
+    - assets/images/cards/5C.jpg
+    - assets/images/cards/8S.jpg
+    - assets/images/cards/8D.jpg
+    - assets/images/cards/Gray_back.jpg
+    - assets/images/cards/Green_back.jpg
+    - assets/images/cards/aces.jpg
+    - assets/images/cards/9S.jpg
+    - assets/images/cards/9D.jpg
+    - assets/images/cards/4C.jpg
+    - assets/images/cards/AH.jpg
+    - assets/images/cards/Red_back.jpg
+    - assets/images/cards/8C.jpg
+    - assets/images/cards/5S.jpg
+    - assets/images/cards/6H.jpg
+    - assets/images/cards/5D.jpg
+    - assets/images/cards/honor_clubs.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

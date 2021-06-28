@@ -10,7 +10,7 @@ class Const {
 
   static const String ROOT_ROUTE = "/";
 
-  static const String TITLE = "Forty-fives";
+  static const String TITLE = "Learn Trump";
   static const String NEW_GAME = "New Game";
   static const String QUIT_GAME = "Quit Game";
 
