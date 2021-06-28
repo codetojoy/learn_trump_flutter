@@ -26,28 +26,46 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late AppBar _appBar;
   bool _inProgress = false;
+  bool _gameOver = false;
   late RoundInfo _roundInfo;
+  // TODO: maybe put into Game
   late m.Suit _trumpSuit;
   late m.Suit _leadingSuit;
   late Hand _hand;
   late Game _game;
+  final _config = m.Config.instance;
+
+  void _newRound() {
+    _trumpSuit = m.Suits().getRandom();
+    _leadingSuit = m.Suits().getRandom();
+    _game = Game(_trumpSuit, _leadingSuit, _config.mode, _config.numCards);
+    final cards = _game.getCards();
+    _hand = Hand.provide(cards);
+  }
 
   void _newGame() {
     setState(() {
-      _inProgress = true;
-      _trumpSuit = m.Suits().getRandom();
-      _leadingSuit = m.Suits().getRandom();
-      final config = m.Config.instance;
-      _roundInfo = RoundInfo.init(config.numRounds);
-      _game = Game(_trumpSuit, _leadingSuit, config.mode, config.numCards);
-      final cards = _game.getCards();
-      _hand = Hand.provide(cards);
+      if (!_inProgress || (_inProgress && _gameOver)) {
+        _inProgress = true;
+        _gameOver = false;
+        _roundInfo = RoundInfo.init(_config.numRounds);
+        _newRound();
+      }
     });
   }
 
-  void _selectCard(m.Card card) {
+  void _selectCard(m.Card selection) {
     setState(() {
-      L.log('card selected: $card');
+      bool isCorrect = _game.isCorrect(_hand.cards, selection);
+      if (isCorrect) {
+        _roundInfo = _roundInfo.correctGuess();
+        _newRound();
+      } else {
+        _roundInfo = _roundInfo.wrongGuess();
+      }
+      _gameOver = _roundInfo.isDone;
+      _roundInfo = _roundInfo.nextRound();
+      L.log('play c: $selection ri: $_roundInfo');
     });
   }
 
@@ -76,12 +94,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var widgets = <Widget>[];
 
-    if (_inProgress) {
+    if (_inProgress && !_gameOver) {
       widgets = [
-        Score(_roundInfo.numCorrect, _roundInfo.roundNum),
+        Score(_roundInfo),
         Suits(_trumpSuit, _leadingSuit),
-        Text('hand:'),
         HandWidget(_hand, _selectCard, true),
+      ];
+    } else if (_inProgress && _gameOver) {
+      widgets = [
+        Text('Final score:'),
+        Score(_roundInfo),
+        Text('click new to continue'),
       ];
     } else {
       widgets = [
