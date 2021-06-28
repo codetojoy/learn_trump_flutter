@@ -13,11 +13,14 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var imageURL = (_faceUp) ? _card.imageURL : Const.BLUE_BACK;
-    return Container(
-                  height: 100,
-                  child: Image.asset(
-                    imageURL,
-                    fit: BoxFit.cover,
-                  ));
+    return GestureDetector(
+      child: Container(
+          height: 100,
+          child: Image.asset(
+            imageURL,
+            fit: BoxFit.cover,
+          )),
+      onTap: () => _selectHandler(),
+    );
   }
 }

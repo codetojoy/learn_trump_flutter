@@ -47,19 +47,19 @@ class HandWidget extends StatelessWidget {
 
   Widget _buildPortrait2(List<Widget> widgets, BuildContext context) {
     return Card(
-      child: Container(
-        height: 500,
-        width: 500,
-        child: GridView(
-          padding: const EdgeInsets.all(10),
-          children: widgets,
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 80,
-            childAspectRatio: 3/2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-    ))),
-    elevation: 10);
+        child: Container(
+            height: 500,
+            width: 500,
+            child: GridView(
+                padding: const EdgeInsets.all(10),
+                children: widgets,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 80,
+                  childAspectRatio: 3 / 2,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                ))),
+        elevation: 10);
   }
 
   @override

@@ -1,43 +1,60 @@
-import '../models/config.dart';
-import '../models/card.dart';
-import '../models/cards.dart';
-import '../models/deck.dart';
-import './ranker.dart';
+import 'dart:io';
 
-class Game {
-  late final Suit _trumpSuit;
-  late final Suit _leadingSuit;
-  late final Ranker _ranker;
-  late final Mode _mode;
-  late final int _numCards;
+import './config.dart';
+import './card.dart';
+import './cards.dart';
+import './deck.dart';
+import '../services/ranker.dart';
 
-  Game(Suit trumpSuit, Suit leadingSuit, Mode mode, int numCards) {
-    _trumpSuit = trumpSuit;
-    _leadingSuit = leadingSuit;
-    _ranker = Ranker(_trumpSuit, _leadingSuit);
-    _mode = mode;
-    _numCards = numCards;
+class RoundInfo {
+  var firstGuess = true;
+  var roundNum = 1;
+  var numCorrect = 0;
+  var _maxNumRounds = 0;
+
+  RoundInfo.init(int maxNumRounds) {
+    _maxNumRounds = maxNumRounds;
   }
 
-  List<Card> getCards() {
+  RoundInfo(
+      this.firstGuess, this.roundNum, this.numCorrect, this._maxNumRounds);
+
+  bool get isDone => roundNum > _maxNumRounds;
+
+  RoundInfo nextRound() {
+    return RoundInfo(true, roundNum + 1, numCorrect, _maxNumRounds);
+  }
+
+  RoundInfo correctGuess() {
+    final newNumCorrect = (firstGuess) ? numCorrect + 1 : numCorrect;
+    return RoundInfo(firstGuess, roundNum, newNumCorrect, _maxNumRounds);
+  }
+
+  RoundInfo wrongGuess() {
+    return RoundInfo(false, roundNum, numCorrect, _maxNumRounds);
+  }
+
+  @override
+  String toString() {
+    return '$numCorrect / $roundNum';
+  }
+}
+
+/*
+class Game {
+  List<Card> _getCards(Suit trumpSuit) {
     var cards;
-    if (_mode == Mode.mixed_cards) {
+    final numCards = Config.instance.numCards;
+    if (Config.instance.mode == Mode.mixed_cards) {
       final deck = Deck();
       deck.shuffle();
-      cards = deck.take(_numCards);
+      cards = deck.take(numCards);
     } else {
-      cards = C.getRandomBySuit(_trumpSuit, _numCards);
+      cards = C.getRandomBySuit(trumpSuit, numCards);
     }
     return cards;
   }
 
-  bool isCorrect(List<Card> cards, Card selection) {
-    final topCards = _ranker.getTopRankedCards(cards);
-    final result = topCards.contains(selection);
-    return result;
-  }
-
-/*
   Card _getSelection(List<Card> cards) {
     var result = C.UNKNOWN;
     var done = false;
@@ -111,5 +128,5 @@ class Game {
       }
     }
   }
-  */
 }
+*/

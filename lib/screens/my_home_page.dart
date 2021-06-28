@@ -4,9 +4,15 @@ import './about.dart';
 import './config.dart';
 import './help.dart';
 import '../models/cards.dart';
+import '../models/card.dart' as m;
 import '../models/hand.dart';
+import '../models/config.dart' as m;
+import '../models/round_info.dart';
 import '../widgets/hand.dart';
-import '../widgets/card.dart';
+import '../widgets/score.dart';
+import '../widgets/suits.dart';
+import '../utils/logger.dart';
+import '../services/game.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -19,25 +25,40 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late AppBar _appBar;
-  int _counter = 0;
+  bool _inProgress = false;
+  late RoundInfo _roundInfo;
+  late m.Suit _trumpSuit;
+  late m.Suit _leadingSuit;
+  late Hand _hand;
+  late Game _game;
 
-  void _incrementCounter() {
+  void _newGame() {
     setState(() {
-      _counter++;
+      _inProgress = true;
+      _trumpSuit = m.Suits().getRandom();
+      _leadingSuit = m.Suits().getRandom();
+      final config = m.Config.instance;
+      _roundInfo = RoundInfo.init(config.numRounds);
+      _game = Game(_trumpSuit, _leadingSuit, config.mode, config.numCards);
+      final cards = _game.getCards();
+      _hand = Hand.provide(cards);
     });
   }
 
-  void _selectionHandler() {
+  void _selectCard(m.Card card) {
     setState(() {
+      L.log('card selected: $card');
     });
   }
 
   void _pushAbout() {
     Navigator.of(context).pushNamed(About.routeName);
   }
+
   void _pushConfig() {
     Navigator.of(context).pushNamed(Config.routeName);
   }
+
   void _pushHelp() {
     Navigator.of(context).pushNamed(Help.routeName);
   }
@@ -53,41 +74,34 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    var hand1 = Hand();
-    hand1.dealCard(C.$AC); // c45.Card(c45.Ordinal.ACE, c45.Suit.CLUBS));
-    hand1.dealCard(C.$2D); // c45.Card(c45.Ordinal.TWO, c45.Suit.DIAMONDS));
-    hand1.dealCard(C.$3H); // c45.Card(c45.Ordinal.THREE, c45.Suit.HEARTS));
-    hand1.dealCard(C.$4S); // c45.Card(c45.Ordinal.FOUR, c45.Suit.SPADES));
-    hand1.dealCard(C.$5C); // c45.Card(c45.Ordinal.FIVE, c45.Suit.CLUBS));
-    var hand2 = Hand();
-    hand2.dealCard(C.$AD); // c45.Card(c45.Ordinal.ACE, c45.Suit.DIAMONDS));
-    hand2.dealCard(C.$2D); // c45.Card(c45.Ordinal.TWO, c45.Suit.DIAMONDS));
-    hand2.dealCard(C.$3D); // c45.Card(c45.Ordinal.THREE, c45.Suit.DIAMONDS));
-    hand2.dealCard(C.$4D); // c45.Card(c45.Ordinal.FOUR, c45.Suit.DIAMONDS));
-    hand2.dealCard(C.$10S); // c45.Card(c45.Ordinal.TEN, c45.Suit.SPADES));
-    // var card = CardWidget(c45.Card(c45.Ordinal.FOUR, c45.Suit.DIAMONDS), _selectionHandler, true);
+    var widgets = <Widget>[];
+
+    if (_inProgress) {
+      widgets = [
+        Score(_roundInfo.numCorrect, _roundInfo.roundNum),
+        Suits(_trumpSuit, _leadingSuit),
+        Text('hand:'),
+        HandWidget(_hand, _selectCard, true),
+      ];
+    } else {
+      widgets = [
+        Text('click new:'),
+      ];
+    }
 
     return Scaffold(
       appBar: _appBar,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('status area',),
-            Text('computer:',),
-            HandWidget(hand2, _selectionHandler, false),
-            Text('action:',),
-            HandWidget(hand1, _selectionHandler, true),
-            Text('your hand:',),
-            HandWidget(hand2, _selectionHandler, true),
-          ],
+          children: widgets,
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _newGame,
+        tooltip: 'New Game',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
