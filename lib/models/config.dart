@@ -5,7 +5,7 @@ enum Mode {
 
 class Config {
   static const int _numCards = 5;
-  static const int _numRounds = 5;
+  static const int _numRounds = 3;
   static const Mode _mode = Mode.mixed_cards;
   static const bool _debug = true;
 

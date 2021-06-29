@@ -7,6 +7,7 @@ import '../models/cards.dart';
 import '../models/card.dart' as m;
 import '../models/hand.dart';
 import '../models/config.dart' as m;
+import '../models/game_info.dart';
 import '../models/round_info.dart';
 import '../widgets/hand.dart';
 import '../widgets/score.dart';
@@ -25,32 +26,47 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late AppBar _appBar;
+  final config = m.Config.instance;
+  late GameInfo _gameInfo = GameInfo.unknown(config);
+  late Game _game;
+  late Hand _hand;
+  /*
+  // TODO: maybe put into Game
   bool _inProgress = false;
   bool _gameOver = false;
   late RoundInfo _roundInfo;
-  // TODO: maybe put into Game
   late m.Suit _trumpSuit;
   late m.Suit _leadingSuit;
-  late Hand _hand;
-  late Game _game;
-  final _config = m.Config.instance;
+  */
 
   void _newRound() {
-    _trumpSuit = m.Suits().getRandom();
-    _leadingSuit = m.Suits().getRandom();
-    _game = Game(_trumpSuit, _leadingSuit, _config.mode, _config.numCards);
-    final cards = _game.getCards();
-    _hand = Hand.provide(cards);
+    // _game = Game(_gameInfo);
+    L.log('cp round a');
+    final hand = _game.getHand();
+    _hand = hand;
+    L.log('cp round b $hand.cards');
+    _gameInfo.setHand(hand);
   }
 
   void _newGame() {
     setState(() {
-      if (!_inProgress || (_inProgress && _gameOver)) {
+      if (_gameInfo.isUnknown || !_gameInfo.ongoing) {
+        _gameInfo = GameInfo(config);
+        _game = Game(_gameInfo);
+        _newRound();
+      } else {
+        L.log('denied: create a new game');
+      }
+      /*
+      if (!_gameInfo.inProgress ||
+          (_gameInfo.inProgress && _gameInfo.gameOver)) {
+        _gameInfo = GameInfo(_config);
         _inProgress = true;
         _gameOver = false;
         _roundInfo = RoundInfo.init(_config.numRounds);
         _newRound();
       }
+        */
     });
   }
 
@@ -58,14 +74,15 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       bool isCorrect = _game.isCorrect(_hand.cards, selection);
       if (isCorrect) {
-        _roundInfo = _roundInfo.correctGuess();
+        _gameInfo.correctGuess();
         _newRound();
       } else {
-        _roundInfo = _roundInfo.wrongGuess();
+        _gameInfo.wrongGuess();
       }
-      _gameOver = _roundInfo.isDone;
-      _roundInfo = _roundInfo.nextRound();
-      L.log('play c: $selection ri: $_roundInfo');
+      _gameInfo.roundOver();
+      // _gameOver = _roundInfo.isDone;
+      // _roundInfo = _roundInfo.nextRound();
+      L.log('play c: $selection gi: $_gameInfo');
     });
   }
 
@@ -94,16 +111,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var widgets = <Widget>[];
 
-    if (_inProgress && !_gameOver) {
+    if (_gameInfo.ongoing) {
       widgets = [
-        Score(_roundInfo),
-        Suits(_trumpSuit, _leadingSuit),
+        Score(_gameInfo.roundInfo),
+        Suits(_gameInfo.trumpSuit, _gameInfo.leadingSuit),
         HandWidget(_hand, _selectCard, true),
       ];
-    } else if (_inProgress && _gameOver) {
+    } else if (_gameInfo.isDone) {
       widgets = [
         Text('Final score:'),
-        Score(_roundInfo),
+        Score(_gameInfo.roundInfo),
         Text('click new to continue'),
       ];
     } else {
