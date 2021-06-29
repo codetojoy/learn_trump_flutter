@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import './screens/about.dart';
 import './screens/config.dart';
 import './screens/help.dart';
-import './screens/my_home_page.dart';
+import './screens/home_page.dart';
 import './utils/constants.dart';
 
 void main() {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: Const.ROOT_ROUTE,
         routes: {
-          Const.ROOT_ROUTE: (ctx) => MyHomePage(title: Const.TITLE),
+          Const.ROOT_ROUTE: (ctx) => HomePage(title: Const.TITLE),
           About.routeName: (ctx) => About(),
           Config.routeName: (ctx) => Config(),
           Help.routeName: (ctx) => Help(),

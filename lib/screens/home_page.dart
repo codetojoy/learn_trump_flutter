@@ -15,16 +15,16 @@ import '../widgets/suits.dart';
 import '../utils/logger.dart';
 import '../services/game.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   late AppBar _appBar;
   final config = m.Config.instance;
   late GameInfo _gameInfo = GameInfo.unknown(config);
