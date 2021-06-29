@@ -29,22 +29,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final config = m.Config.instance;
   late GameInfo _gameInfo = GameInfo.unknown(config);
   late Game _game;
-  late Hand _hand;
-  /*
-  // TODO: maybe put into Game
-  bool _inProgress = false;
-  bool _gameOver = false;
-  late RoundInfo _roundInfo;
-  late m.Suit _trumpSuit;
-  late m.Suit _leadingSuit;
-  */
 
   void _newRound() {
-    // _game = Game(_gameInfo);
-    L.log('cp round a');
     final hand = _game.getHand();
-    _hand = hand;
-    L.log('cp round b $hand.cards');
     _gameInfo.setHand(hand);
   }
 
@@ -57,22 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         L.log('denied: create a new game');
       }
-      /*
-      if (!_gameInfo.inProgress ||
-          (_gameInfo.inProgress && _gameInfo.gameOver)) {
-        _gameInfo = GameInfo(_config);
-        _inProgress = true;
-        _gameOver = false;
-        _roundInfo = RoundInfo.init(_config.numRounds);
-        _newRound();
-      }
-        */
     });
   }
 
   void _selectCard(m.Card selection) {
     setState(() {
-      bool isCorrect = _game.isCorrect(_hand.cards, selection);
+      bool isCorrect = _game.isCorrect(_gameInfo.hand.cards, selection);
       if (isCorrect) {
         _gameInfo.correctGuess();
         _newRound();
@@ -80,8 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
         _gameInfo.wrongGuess();
       }
       _gameInfo.roundOver();
-      // _gameOver = _roundInfo.isDone;
-      // _roundInfo = _roundInfo.nextRound();
       L.log('play c: $selection gi: $_gameInfo');
     });
   }
@@ -115,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
       widgets = [
         Score(_gameInfo.roundInfo),
         Suits(_gameInfo.trumpSuit, _gameInfo.leadingSuit),
-        HandWidget(_hand, _selectCard, true),
+        HandWidget(_gameInfo.hand, _selectCard, true),
       ];
     } else if (_gameInfo.isDone) {
       widgets = [

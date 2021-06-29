@@ -1,4 +1,3 @@
-
 class RoundInfo {
   var firstGuess = true;
   var roundNum = 1;

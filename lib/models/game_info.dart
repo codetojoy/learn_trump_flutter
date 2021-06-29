@@ -5,22 +5,19 @@ import './round_info.dart';
 
 class GameInfo {
   late RoundInfo roundInfo;
-  late Suit trumpSuit;
-  late Suit leadingSuit;
+  Suit trumpSuit = Suit.UNKNOWN;
+  Suit leadingSuit = Suit.UNKNOWN;
   late Hand hand;
   late Mode mode;
   int numCards = 0;
 
   bool _inProgress = false;
-  bool _gameOver = false;
   bool _unknown = true;
   late Config _config;
 
   GameInfo.unknown(Config config) {
     _config = config;
     roundInfo = RoundInfo.init(_config.numRounds);
-    trumpSuit = Suits().getRandom();
-    leadingSuit = Suits().getRandom();
   }
 
   GameInfo(Config config) {
@@ -35,7 +32,7 @@ class GameInfo {
   }
 
   bool get isUnknown => _unknown;
-  bool get ongoing => _inProgress && !_gameOver && !roundInfo.isDone;
+  bool get ongoing => _inProgress && !roundInfo.isDone;
 
   void setHand(Hand hand) {
     this.hand = hand;
@@ -48,7 +45,6 @@ class GameInfo {
 
   void newGame() {
     _inProgress = true;
-    _gameOver = false;
     roundInfo = RoundInfo.init(_config.numRounds);
   }
 
