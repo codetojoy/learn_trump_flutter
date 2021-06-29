@@ -12,10 +12,12 @@ void main() {
     final numRounds = 3;
     setUp(() {});
 
-    int countBySuit(Hand hand, Suit suit) {
-      return hand.cards
-          .map((c) => c.suit == suit ? 1 : 0)
-          .reduce((v, e) => v + e);
+    bool containsSuit(Hand hand, Suit suit) {
+      bool result = false;
+      hand.cards.forEach((card) {
+        result = result || card.suit == suit;
+      });
+      return result;
     }
 
     test('getHand mixed', () {
@@ -27,13 +29,30 @@ void main() {
       // test
       final hand = game.getHand();
 
-      int numSuits = 0;
-      numSuits += countBySuit(hand, Suit.CLUBS);
-      numSuits += countBySuit(hand, Suit.DIAMONDS);
-      numSuits += countBySuit(hand, Suit.HEARTS);
-      numSuits += countBySuit(hand, Suit.SPADES);
       expect(hand.cards.length, numCards);
+      int numSuits = 0;
+      numSuits += containsSuit(hand, Suit.CLUBS) ? 1 : 0;
+      numSuits += containsSuit(hand, Suit.DIAMONDS) ? 1 : 0;
+      numSuits += containsSuit(hand, Suit.HEARTS) ? 1 : 0;
+      numSuits += containsSuit(hand, Suit.SPADES) ? 1 : 0;
       expect(numSuits > 1, true);
+    });
+    test('getHand pure', () {
+      final config =
+          Config.provided(numCards, numRounds, Mode.pure_suit, false);
+      final gameInfo = GameInfo(config);
+      final game = Game(gameInfo);
+
+      // test
+      final hand = game.getHand();
+
+      expect(hand.cards.length, numCards);
+      int numSuits = 0;
+      numSuits += containsSuit(hand, Suit.CLUBS) ? 1 : 0;
+      numSuits += containsSuit(hand, Suit.DIAMONDS) ? 1 : 0;
+      numSuits += containsSuit(hand, Suit.HEARTS) ? 1 : 0;
+      numSuits += containsSuit(hand, Suit.SPADES) ? 1 : 0;
+      expect(numSuits, 1);
     });
   }); // group
 }

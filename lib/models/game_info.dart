@@ -32,7 +32,7 @@ class GameInfo {
   }
 
   bool get isUnknown => _unknown;
-  bool get ongoing => _inProgress && !roundInfo.isDone;
+  bool get isOngoing => _inProgress && !roundInfo.isDone;
 
   void setHand(Hand hand) {
     this.hand = hand;

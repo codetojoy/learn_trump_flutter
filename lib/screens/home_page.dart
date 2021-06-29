@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   void _newGame() {
     setState(() {
-      if (_gameInfo.isUnknown || !_gameInfo.ongoing) {
+      if (_gameInfo.isUnknown || !_gameInfo.isOngoing) {
         _gameInfo = GameInfo(config);
         _game = Game(_gameInfo);
         _newRound();
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
 
     var widgets = <Widget>[];
 
-    if (_gameInfo.ongoing) {
+    if (_gameInfo.isOngoing) {
       widgets = [
         Score(_gameInfo.roundInfo),
         Suits(_gameInfo.trumpSuit, _gameInfo.leadingSuit),
