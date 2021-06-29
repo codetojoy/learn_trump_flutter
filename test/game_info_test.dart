@@ -21,7 +21,7 @@ void main() {
       expect(gameInfo.isOngoing, true);
       expect(gameInfo.isUnknown, false);
     });
-    test('newRound', () {
+    test('newRound mixed', () {
       final config =
           Config.provided(numCards, numRounds, Mode.mixed_cards, false);
       final gameInfo = GameInfo(config);
@@ -34,6 +34,20 @@ void main() {
       expect(gameInfo.isUnknown, false);
       expect(gameInfo.trumpSuit != Suit.UNKNOWN, true);
       expect(gameInfo.leadingSuit != Suit.UNKNOWN, true);
+    });
+    test('newRound pure', () {
+      final config =
+          Config.provided(numCards, numRounds, Mode.pure_suit, false);
+      final gameInfo = GameInfo(config);
+      gameInfo.newGame();
+
+      // test
+      gameInfo.newRound();
+
+      expect(gameInfo.isOngoing, true);
+      expect(gameInfo.isUnknown, false);
+      expect(gameInfo.trumpSuit != Suit.UNKNOWN, true);
+      expect(gameInfo.leadingSuit == Suit.UNKNOWN, true);
     });
   }); // group
 }

@@ -26,8 +26,7 @@ class GameInfo {
     mode = config.mode;
     numCards = config.numCards;
     roundInfo = RoundInfo.init(_config.numRounds);
-    trumpSuit = Suits().getRandom();
-    leadingSuit = Suits().getRandom();
+    newRound();
     _inProgress = true;
   }
 
@@ -40,7 +39,8 @@ class GameInfo {
 
   void newRound() {
     trumpSuit = Suits().getRandom();
-    leadingSuit = Suits().getRandom();
+    leadingSuit =
+        (mode == Mode.mixed_cards) ? Suits().getRandom() : Suit.UNKNOWN;
   }
 
   void newGame() {
