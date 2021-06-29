@@ -4,12 +4,14 @@ enum Mode {
 }
 
 class Config {
-  static const int _numCards = 5;
-  static const int _numRounds = 3;
-  static const Mode _mode = Mode.mixed_cards;
-  static const bool _debug = true;
+  int _numCards = 5;
+  int _numRounds = 3;
+  Mode _mode = Mode.mixed_cards;
+  bool _debug = true;
 
   Config._();
+
+  Config.provided(this._numCards, this._numRounds, this._mode, this._debug);
 
   static Config instance = Config._();
 
