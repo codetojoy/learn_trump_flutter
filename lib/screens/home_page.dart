@@ -9,8 +9,9 @@ import '../models/game_info.dart';
 import '../widgets/hand.dart';
 import '../widgets/score.dart';
 import '../widgets/suits.dart';
-import '../utils/logger.dart';
 import '../services/game.dart';
+import '../utils/constants.dart';
+import '../utils/logger.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.title}) : super(key: key);
@@ -34,6 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   void _newGame() {
     setState(() {
+      L.log('new game with $config');
       if (_gameInfo.isUnknown || !_gameInfo.isOngoing) {
         _gameInfo = GameInfo(config);
         _game = Game(_gameInfo);
@@ -41,6 +43,12 @@ class _HomePageState extends State<HomePage> {
       } else {
         L.log('denied: create a new game');
       }
+    });
+  }
+
+  void _cancelGame() {
+    setState(() {
+      _gameInfo = GameInfo.unknown(config);
     });
   }
 
@@ -63,7 +71,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _pushConfig() {
-    Navigator.of(context).pushNamed(Config.routeName);
+    Navigator.of(context).pushNamed(ConfigForm.routeName,
+        arguments: {Const.CONFIG_PARAM: m.Config.instance});
   }
 
   void _pushHelp() {
@@ -101,6 +110,18 @@ class _HomePageState extends State<HomePage> {
       ];
     }
 
+    var actionButton = (_gameInfo.isOngoing)
+        ? FloatingActionButton(
+            onPressed: _cancelGame,
+            tooltip: Const.QUIT_GAME,
+            child: Icon(Icons.cancel),
+          )
+        : FloatingActionButton(
+            onPressed: _newGame,
+            tooltip: Const.NEW_GAME,
+            child: Icon(Icons.add),
+          );
+
     return Scaffold(
       appBar: _appBar,
       body: Center(
@@ -109,11 +130,7 @@ class _HomePageState extends State<HomePage> {
           children: widgets,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _newGame,
-        tooltip: 'New Game',
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: actionButton,
     );
   }
 }

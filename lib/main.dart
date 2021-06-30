@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         routes: {
           Const.ROOT_ROUTE: (ctx) => HomePage(title: Const.TITLE),
           About.routeName: (ctx) => About(),
-          Config.routeName: (ctx) => Config(),
+          ConfigForm.routeName: (ctx) => ConfigForm(),
           Help.routeName: (ctx) => Help(),
         });
   }

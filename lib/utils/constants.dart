@@ -1,4 +1,9 @@
 class Const {
+  static const MODE_MIXED_CARDS = "mixed_cards";
+  static const MODE_PURE_SUIT = "pure_suit";
+
+  static const CONFIG_PARAM = "config";
+
   static const NUM_CARDS_IN_SUIT = 13;
   static const NUM_CARDS_IN_DECK = 52;
   static const NUM_CARDS_IN_HAND = 5;

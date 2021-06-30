@@ -4,19 +4,30 @@ enum Mode {
 }
 
 class Config {
-  int _numCards = 5;
-  int _numRounds = 3;
-  Mode _mode = Mode.mixed_cards;
-  bool _debug = true;
+  int numCards = 5;
+  int numRounds = 3;
+  Mode mode = Mode.mixed_cards;
+  bool debug = true;
 
   Config._();
 
-  Config.provided(this._numCards, this._numRounds, this._mode, this._debug);
+  Config.provided(this.numCards, this.numRounds, this.mode, this.debug);
 
   static Config instance = Config._();
 
-  int get numCards => _numCards;
-  Mode get mode => _mode;
-  int get numRounds => _numRounds;
-  bool get debug => _debug;
+  bool isValidNumRounds(String? value) {
+    var result = false;
+    if (value != null) {
+      var tmpValue = int.tryParse(value);
+      if (tmpValue != null) {
+        result = tmpValue > 0;
+      }
+    }
+    return result;
+  }
+
+  @override
+  String toString() {
+    return 'config: c: $numCards, r: $numRounds, m: $mode, d: $debug';
+  }
 }
