@@ -130,4 +130,28 @@ class C {
     final result = cards.take(numCards).toList();
     return result;
   }
+
+  static String imageURL(Suit suit) {
+    var prefix = '';
+    switch (suit) {
+      case Suit.CLUBS:
+        prefix = 'C';
+        break;
+      case Suit.DIAMONDS:
+        prefix = 'D';
+        break;
+      case Suit.HEARTS:
+        prefix = 'H';
+        break;
+      case Suit.SPADES:
+        prefix = 'S';
+        break;
+      case Suit.UNKNOWN:
+        // TODO: fix this
+        prefix = 'C';
+        break;
+    }
+    final result = 'assets/images/cards/${prefix}_suit.jpg';
+    return result;
+  }
 }

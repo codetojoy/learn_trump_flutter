@@ -24,8 +24,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late AppBar _appBar;
-  final config = m.Config.instance;
-  late GameInfo _gameInfo = GameInfo.unknown(config);
+  final _config = m.Config.instance;
+  late GameInfo _gameInfo = GameInfo.unknown(_config);
   late Game _game;
 
   void _newRound() {
@@ -35,9 +35,9 @@ class _HomePageState extends State<HomePage> {
 
   void _newGame() {
     setState(() {
-      L.log('new game with $config');
+      L.log('new game with $_config');
       if (_gameInfo.isUnknown || !_gameInfo.isOngoing) {
-        _gameInfo = GameInfo(config);
+        _gameInfo = GameInfo(_config);
         _game = Game(_gameInfo);
         _newRound();
       } else {
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   void _cancelGame() {
     setState(() {
-      _gameInfo = GameInfo.unknown(config);
+      _gameInfo = GameInfo.unknown(_config);
     });
   }
 
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
     if (_gameInfo.isOngoing) {
       widgets = [
         Score(_gameInfo.roundInfo),
-        Suits(_gameInfo.trumpSuit, _gameInfo.leadingSuit),
+        Suits(_gameInfo.trumpSuit, _gameInfo.leadingSuit, _config.mode),
         HandWidget(_gameInfo.hand, _selectCard, true),
       ];
     } else if (_gameInfo.isDone) {
